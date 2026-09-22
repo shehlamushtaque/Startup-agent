@@ -5,10 +5,10 @@ of specialized agents gather funding history, competitor growth metrics, web
 results and SEC filings in parallel, then synthesize them into a single report
 you can ask follow-up questions about.
 
-- **Multi-agent pipeline** — funding intelligence, competitor growth, web research, SERP, SEC filings
-- **Live progress** — WebSocket streams each agent's status as it runs
-- **Synthesis + Q&A** — LLM-generated report with a question-answering tab over the results
-- **React frontend** — Vite, TypeScript and Tailwind
+- **Multi-agent pipeline**: funding intelligence, competitor growth, web research, SERP, SEC filings
+- **Live progress**: WebSocket streams each agent's status as it runs
+- **Synthesis + Q&A**: LLM-generated report with a question-answering tab over the results
+- **React frontend**: Vite, TypeScript and Tailwind
 
 ---
 
@@ -39,11 +39,11 @@ percentage and the option to cancel mid-run.
 
 The **AI-Powered** badge confirms an LLM produced this report rather than the
 template fallback. The report opens with an Executive Summary and Key Findings,
-each tied back to specific evidence — Reddit and TikTok activity around Istanbul
+each tied back to specific evidence: Reddit and TikTok activity around Istanbul
 cat cafés, and a $1M seed round for a pet-tech startup as funding precedent.
 
 Notably it also reports what it *could not* find: no competitor financials for
-Turkish cat cafés, and no regulatory filings — stated as gaps rather than
+Turkish cat cafés, and no regulatory filings, stated as gaps rather than
 glossed over.
 
 ![Report actions](docs/images/3-report-actions.png)
@@ -61,7 +61,7 @@ citations, and a count of evidence items gathered.
 
 ![Agent sources](docs/images/5-agent-sources.png)
 
-Agent failures are surfaced honestly rather than hidden — here `SecFilingsAgent`
+Agent failures are surfaced honestly rather than hidden: here `SecFilingsAgent`
 hit an HTTP 429 and `SerpSearchAgent` timed out, both marked **LOW**. The run
 continues regardless: `WebResearchAgent` returned three linked sources, and
 `SynthesisAgent` completed at **HIGH** confidence.
@@ -116,7 +116,7 @@ source startup_assistant_env/bin/activate
 pip install -r requirements.txt
 ```
 
-This takes a while — `sentence-transformers` pulls in PyTorch and Transformers
+This takes a while: `sentence-transformers` pulls in PyTorch and Transformers
 (~2 GB). On first run the app also downloads the `all-MiniLM-L6-v2` embedding
 model from Hugging Face.
 
@@ -126,7 +126,7 @@ model from Hugging Face.
 cp .env.example .env        # Windows: copy .env.example .env
 ```
 
-Then open `.env` and fill in the keys you have. **Every key is optional** — the
+Then open `.env` and fill in the keys you have. **Every key is optional**: the
 app degrades gracefully, skipping an agent or falling back to template output
 rather than failing:
 
@@ -144,13 +144,13 @@ configured wins:
 
 | Priority | Provider | Variables | Notes |
 |---|---|---|---|
-| 1 | **Ollama** | *(none)* — just run `ollama serve` | Local and free. Override with `OLLAMA_BASE_URL` / `OLLAMA_MODEL`. |
+| 1 | **Ollama** | *(none)*, just run `ollama serve` | Local and free. Override with `OLLAMA_BASE_URL` / `OLLAMA_MODEL`. |
 | 2 | **Groq** | `GROQ_API_KEY` | Free tier, no card. Default model `llama-3.3-70b-versatile`; override with `GROQ_MODEL`. |
 | 3 | **Any OpenAI-compatible API** | `LLM_API_KEY` + `LLM_BASE_URL` + `LLM_MODEL` | OpenAI, OpenRouter, Together, self-hosted gateways. |
 | 4 | **DeepSeek** | `DEEPSEEK_API_KEY` | Override model with `DEEPSEEK_MODEL`. |
 
-All four speak the same interface, so switching providers is a `.env` change —
-no code edits required.
+All four speak the same interface, so switching providers is a `.env` change,
+with no code edits required.
 
 **Free-tier token limits.** Synthesis sends a large evidence payload, which can
 exceed a free tier's tokens-per-minute cap (Groq's is 8,000). The app detects
@@ -182,13 +182,13 @@ npm install
 
 The backend and frontend run as two processes, so use two terminals.
 
-**Terminal 1 — backend** (run from the **project root**, not `backend/api/`):
+**Terminal 1: backend** (run from the **project root**, not `backend/api/`):
 
 ```bash
 python -m uvicorn backend.api.main:app --host 127.0.0.1 --port 8000
 ```
 
-API on http://127.0.0.1:8000 — check http://127.0.0.1:8000/health, which should
+API on http://127.0.0.1:8000. Check http://127.0.0.1:8000/health, which should
 return `{"status":"healthy"}`.
 
 > **Why not `python backend/api/run_server.py`?** That entrypoint fails with
@@ -206,20 +206,20 @@ return `{"status":"healthy"}`.
 >
 > Add `--reload` for auto-restart during development.
 
-**Terminal 2 — frontend:**
+**Terminal 2: frontend**
 
 ```bash
 cd frontend
 npm run dev
 ```
 
-UI on http://localhost:5173. Open that in your browser — it talks to the
+UI on http://localhost:5173. Open that in your browser. It talks to the
 backend on port 8000, which must already be running.
 
 ### Using it
 
 1. Enter a startup idea; optionally add problem, audience, region and maturity.
-2. Toggle AI synthesis (needs an LLM provider configured — see above).
+2. Toggle AI synthesis (needs an LLM provider configured, see above).
 3. Click **Start Research** and watch the agents report in live.
 4. Read the **Report**, inspect **Agent Results**, or ask follow-ups in **Q&A**.
 
@@ -235,7 +235,7 @@ python -m backend.cli --idea "Your startup idea" --problem "Problem it solves" -
 
 `data/vector/` ships with the repo, so the Q&A index works out of the box.
 
-`data/raw/` and `data/processed/` are **gitignored** — they hold multi-hundred-MB
+`data/raw/` and `data/processed/` are **gitignored**: they hold multi-hundred-MB
 Crunchbase and Growjo datasets. A fresh clone therefore won't have them, and
 `FundingIntelligenceAgent` and `CompetitorGrowthAgent` will return no evidence
 until you supply them. The rest of the pipeline runs fine without them.
@@ -301,26 +301,26 @@ Startup-agent/
 
 ## Troubleshooting
 
-**`ModuleNotFoundError: No module named 'backend'`** — you launched from the
+**`ModuleNotFoundError: No module named 'backend'`**: you launched from the
 wrong directory. See the backend run command above.
 
-**`llm_used` is always `false`** — either no LLM provider is configured, or the
+**`llm_used` is always `false`**: either no LLM provider is configured, or the
 configured one is rejecting requests (out of credits, invalid key). The backend
 log distinguishes these; look for a line starting `LLM Q&A unavailable:`.
 
-**Agents return zero evidence** — usually a missing API key, a missing dataset
+**Agents return zero evidence**: usually a missing API key, a missing dataset
 (see *Data files*), or upstream rate limiting. SEC filings in particular return
 HTTP 429 under load. Agent failures are isolated: one failing agent doesn't stop
 the run.
 
-**`npm run dev` — command not found** — Node isn't on your `PATH`. Verify with
+**`npm run dev` says command not found**: Node isn't on your `PATH`. Verify with
 `node --version`.
 
 ---
 
 ## License
 
-Released under the [MIT License](LICENSE) — © 2026 Shehla Mushtaq.
+Released under the [MIT License](LICENSE). © 2026 Shehla Mushtaq.
 
 Note that this covers the code in this repository only. The Crunchbase, Growjo
 and Simplify datasets referenced under `data/` are not included in the repo and
