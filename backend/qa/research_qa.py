@@ -16,11 +16,12 @@ except ImportError:
 
 # Import LLM clients
 try:
-    from backend.llm import get_llm_client
+    from backend.llm import get_llm_client, llm_available
     from backend.llm.client import DeepSeekClient
     from backend.llm.ollama_client import OllamaClient
 except ImportError:
     get_llm_client = None
+    llm_available = None
     DeepSeekClient = None
     OllamaClient = None
 
@@ -40,18 +41,10 @@ class ResearchQA:
         self.evidence_index = self._build_evidence_index()
 
     def _has_llm_key(self) -> bool:
-        """Check if any LLM is available (Ollama or DeepSeek)."""
-        import os
-        # Check for Ollama (local, preferred)
-        if OllamaClient:
-            try:
-                ollama = OllamaClient()
-                if ollama._check_availability():
-                    return True
-            except Exception:
-                pass
-        # Check for DeepSeek
-        return bool(os.getenv("DEEPSEEK_API_KEY"))
+        """Check if any LLM provider is available (Ollama, Groq, DeepSeek, ...)."""
+        if llm_available:
+            return llm_available()
+        return False
 
     def _build_evidence_index(self) -> List[Dict[str, Any]]:
         """Build a searchable index of all evidence."""
@@ -766,5 +759,5 @@ Do NOT:
         # If no relevant business evidence, provide helpful message
         return f"I found {len(evidence)} items in the research, but they don't appear to be directly relevant to your business question. " + \
                f"Please try asking about: funding amounts, competitor performance, market trends, or SEC filings. " + \
-               f"Or set DEEPSEEK_API_KEY to enable AI-powered analysis that can better understand your question."
+               f"Or configure an LLM provider (GROQ_API_KEY, Ollama, or DEEPSEEK_API_KEY) to enable AI-powered analysis that can better understand your question."
 

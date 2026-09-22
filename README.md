@@ -68,11 +68,25 @@ rather than failing:
 
 | Variable | Powers | Without it |
 |---|---|---|
-| `DEEPSEEK_API_KEY` | Report synthesis, Q&A | Deterministic template output; `llm_used: false` |
+| *An LLM provider (see below)* | Report synthesis, Q&A | Deterministic template output; `llm_used: false` |
 | `BRAVE_API_KEY` | `WebResearchAgent` | Agent returns no evidence |
 | `SERP_API_KEY` | `SerpSearchAgent` | Agent returns no evidence |
 | `GOOGLE_API_KEY` + `GOOGLE_CSE_ID` | Google Programmable Search | Falls back to other search agents |
-| `OPENAI_API_KEY` | Optional alternative LLM backend | Unused by default |
+
+### Choosing an LLM provider
+
+Configure **one** of these. They are tried in order, so the first one
+configured wins:
+
+| Priority | Provider | Variables | Notes |
+|---|---|---|---|
+| 1 | **Ollama** | *(none)* — just run `ollama serve` | Local and free. Override with `OLLAMA_BASE_URL` / `OLLAMA_MODEL`. |
+| 2 | **Groq** | `GROQ_API_KEY` | Free tier, no card. Default model `llama-3.3-70b-versatile`; override with `GROQ_MODEL`. |
+| 3 | **Any OpenAI-compatible API** | `LLM_API_KEY` + `LLM_BASE_URL` + `LLM_MODEL` | OpenAI, OpenRouter, Together, self-hosted gateways. |
+| 4 | **DeepSeek** | `DEEPSEEK_API_KEY` | Override model with `DEEPSEEK_MODEL`. |
+
+All four speak the same interface, so switching providers is a `.env` change —
+no code edits required.
 
 `.env` is gitignored and must never be committed.
 
@@ -126,7 +140,7 @@ backend on port 8000, which must already be running.
 ### Using it
 
 1. Enter a startup idea; optionally add problem, audience, region and maturity.
-2. Toggle AI synthesis (needs `DEEPSEEK_API_KEY`).
+2. Toggle AI synthesis (needs an LLM provider configured — see above).
 3. Click **Start Research** and watch the agents report in live.
 4. Read the **Report**, inspect **Agent Results**, or ask follow-ups in **Q&A**.
 
@@ -211,9 +225,9 @@ Startup-agent/
 **`ModuleNotFoundError: No module named 'backend'`** — you launched from the
 wrong directory. See the backend run command above.
 
-**`llm_used` is always `false`** — either `DEEPSEEK_API_KEY` is unset, or the
-DeepSeek account is out of credits. The backend log distinguishes them; look for
-`LLM Q&A unavailable: DeepSeek account needs credits`.
+**`llm_used` is always `false`** — either no LLM provider is configured, or the
+configured one is rejecting requests (out of credits, invalid key). The backend
+log distinguishes these; look for a line starting `LLM Q&A unavailable:`.
 
 **Agents return zero evidence** — usually a missing API key, a missing dataset
 (see *Data files*), or upstream rate limiting. SEC filings in particular return

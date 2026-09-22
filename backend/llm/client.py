@@ -25,10 +25,17 @@ except ImportError:
 
 
 class DeepSeekClient:
-    """Client for DeepSeek API (OpenAI-compatible)."""
+    """Client for DeepSeek API (OpenAI-compatible).
+
+    Also serves as the base for any other OpenAI-compatible provider: a
+    subclass only needs to override the class attributes below.
+    """
 
     BASE_URL = "https://api.deepseek.com/v1"
     DEFAULT_MODEL = "deepseek-chat"
+    ENV_KEY = "DEEPSEEK_API_KEY"
+    ENV_MODEL = "DEEPSEEK_MODEL"
+    PROVIDER_NAME = "DeepSeek"
 
     def __init__(
         self,
@@ -38,10 +45,10 @@ class DeepSeekClient:
     ):
         if OpenAI is None:
             raise ImportError("openai package is required. Install with: pip install openai")
-        self.api_key = api_key or os.getenv("DEEPSEEK_API_KEY")
+        self.api_key = api_key or os.getenv(self.ENV_KEY)
         if not self.api_key:
-            raise ValueError("DEEPSEEK_API_KEY environment variable is required")
-        self.model = model or self.DEFAULT_MODEL
+            raise ValueError(f"{self.ENV_KEY} environment variable is required")
+        self.model = model or os.getenv(self.ENV_MODEL) or self.DEFAULT_MODEL
         self.base_url = base_url or self.BASE_URL
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
@@ -158,3 +165,41 @@ IMPORTANT:
 
 Focus on insights that are SPECIFIC to this startup idea. What does this data tell us about THIS PARTICULAR business opportunity?"""
 
+
+
+class GroqClient(DeepSeekClient):
+    """Client for Groq's OpenAI-compatible API.
+
+    Groq offers a free tier and very low latency. Set GROQ_API_KEY, and
+    optionally GROQ_MODEL to override the default model.
+    """
+
+    BASE_URL = "https://api.groq.com/openai/v1"
+    DEFAULT_MODEL = "llama-3.3-70b-versatile"
+    ENV_KEY = "GROQ_API_KEY"
+    ENV_MODEL = "GROQ_MODEL"
+    PROVIDER_NAME = "Groq"
+
+
+class OpenAICompatibleClient(DeepSeekClient):
+    """Generic client for any OpenAI-compatible endpoint.
+
+    Lets you point the app at OpenAI, OpenRouter, Together, a self-hosted
+    gateway, or anything else speaking the OpenAI chat-completions API,
+    without further code changes. Requires LLM_API_KEY and LLM_BASE_URL;
+    LLM_MODEL selects the model.
+    """
+
+    BASE_URL = ""
+    DEFAULT_MODEL = ""
+    ENV_KEY = "LLM_API_KEY"
+    ENV_MODEL = "LLM_MODEL"
+    PROVIDER_NAME = "OpenAI-compatible"
+
+    def __init__(self, api_key=None, model=None, base_url=None):
+        base_url = base_url or os.getenv("LLM_BASE_URL")
+        if not base_url:
+            raise ValueError("LLM_BASE_URL environment variable is required")
+        super().__init__(api_key=api_key, model=model, base_url=base_url)
+        if not self.model:
+            raise ValueError("LLM_MODEL environment variable is required")
