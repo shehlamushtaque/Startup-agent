@@ -227,5 +227,8 @@ the run.
 
 ## License
 
-No license file is currently included. Add one to clarify how others may use
-this project.
+Released under the [MIT License](LICENSE) — © 2026 Shehla Mushtaq.
+
+Note that this covers the code in this repository only. The Crunchbase, Growjo
+and Simplify datasets referenced under `data/` are not included in the repo and
+carry their own separate licensing terms.
