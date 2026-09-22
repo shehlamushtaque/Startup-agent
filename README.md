@@ -12,6 +12,70 @@ you can ask follow-up questions about.
 
 ---
 
+## Screenshots
+
+A full run, start to finish. The example idea is a **cat café in Turkey** that
+rehomes stray cats.
+
+### 1. Describe the idea
+
+![Idea form](docs/images/0-idea-form.png)
+
+The entry form. Only **Startup Idea** is required; problem, target audience,
+region, maturity stage, business goals and assumptions all sharpen the research
+plan. The **Use AI-powered synthesis** toggle controls whether the report is
+LLM-generated or assembled from templates.
+
+### 2. Research runs
+
+![Research in progress](docs/images/1-research-progress.png)
+
+Progress streams over a WebSocket as each agent reports in, with a running
+percentage and the option to cancel mid-run.
+
+### 3. The report
+
+![Report summary](docs/images/2-report-summary.png)
+
+The **AI-Powered** badge confirms an LLM produced this report rather than the
+template fallback. The report opens with an Executive Summary and Key Findings,
+each tied back to specific evidence — Reddit and TikTok activity around Istanbul
+cat cafés, and a $1M seed round for a pet-tech startup as funding precedent.
+
+Notably it also reports what it *could not* find: no competitor financials for
+Turkish cat cafés, and no regulatory filings — stated as gaps rather than
+glossed over.
+
+![Report actions](docs/images/3-report-actions.png)
+
+Further down: Strategic Implications, concrete Recommended Actions (run a
+micro-survey, pilot a pop-up, partner with a shelter), and Open Questions the
+evidence could not settle. The whole report can be downloaded.
+
+### 4. Agent results
+
+![Agent results](docs/images/4-agent-results.png)
+
+Every agent's output is inspectable, with a confidence badge, its sources and
+citations, and a count of evidence items gathered.
+
+![Agent sources](docs/images/5-agent-sources.png)
+
+Agent failures are surfaced honestly rather than hidden — here `SecFilingsAgent`
+hit an HTTP 429 and `SerpSearchAgent` timed out, both marked **LOW**. The run
+continues regardless: `WebResearchAgent` returned three linked sources, and
+`SynthesisAgent` completed at **HIGH** confidence.
+
+### 5. Ask follow-up questions
+
+![Q&A tab](docs/images/6-qa-tab.png)
+
+The Q&A tab answers questions against the evidence from this specific run.
+
+![Q&A question](docs/images/7-qa-question.png)
+
+---
+
 ## Prerequisites
 
 | | Version | Notes |
