@@ -1,0 +1,11 @@
+REPORT ID: R05
+Date: 2026-02-26
+System: TEMPLATE
+Brief: IQCoPay connects patients with their doctors, and enables them to pay for their healthcare in full or through installmen
+Region: USA
+============================================================
+Business area: IQCoPay connects patients with their doctors, and enables them to
+pay for their healthcare in full or through installments.
+
+No structured data available for this input via the template system.
+Manual research recommended.

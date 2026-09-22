@@ -1,0 +1,60 @@
+{
+  "n_ratings": 60,
+  "n_haris": 30,
+  "n_template": 30,
+  "haris_stats": {
+    "relevance": [
+      3.9,
+      0.48066046515042266
+    ],
+    "completeness": [
+      3.7,
+      0.5959634332684376
+    ],
+    "actionability": [
+      3.7333333333333334,
+      0.5208304597621878
+    ],
+    "citation_grounding": [
+      3.566666666666667,
+      0.5683207771559354
+    ]
+  },
+  "template_stats": {
+    "relevance": [
+      2.8,
+      0.4068381021724862
+    ],
+    "completeness": [
+      2.4,
+      0.49827287912243984
+    ],
+    "actionability": [
+      2.7333333333333334,
+      0.5832922809856746
+    ],
+    "citation_grounding": [
+      1.6666666666666667,
+      0.546672273590534
+    ]
+  },
+  "overall_krippendorff_alpha": 0.6849348320644844,
+  "per_dimension_alpha": {
+    "relevance": {
+      "HARIS": -0.003360544217686945,
+      "TEMPLATE": -0.00694444444444442
+    },
+    "completeness": {
+      "HARIS": 0.16723539618276462,
+      "TEMPLATE": 0.3287037037037037
+    },
+    "actionability": {
+      "HARIS": 0.0323809523809524,
+      "TEMPLATE": 0.12769841269841264
+    },
+    "citation_grounding": {
+      "HARIS": -0.05555555555555558,
+      "TEMPLATE": -0.2399122807017544
+    }
+  }
+}

@@ -1,0 +1,11 @@
+report_id,company,category,brief,region,haris_file,template_file,haris_is_A
+R01,Hadasit Bio Holdings,biotech,Hadasit Bio-Holdings provides investment exposure to a select portfolio of biotechnology companies b,ISR,R01_HARIS.txt,R01_TEMPLATE.txt,True
+R02,Tigo Energy,cleantech,Tigo Energy provides smart module technology for the solar industry.,USA,R02_HARIS.txt,R02_TEMPLATE.txt,True
+R03,The Learning Lab,edtech,The Learning Lab is a training and consultancy business that delivers learning experiences to the pu,GBR,R03_HARIS.txt,R03_TEMPLATE.txt,False
+R04,Smallknot,fintech,Smallknot is an online community crowdfunding platform that allows individuals to invest in small bu,USA,R04_HARIS.txt,R04_TEMPLATE.txt,True
+R05,iQCoPay,healthcare,"IQCoPay connects patients with their doctors, and enables them to pay for their healthcare in full o",USA,R05_HARIS.txt,R05_TEMPLATE.txt,True
+R06,Modus eDiscovery,legaltech,Modus is an e-discovery services provider helping corporations and law firms control costs and meet ,USA,R06_HARIS.txt,R06_TEMPLATE.txt,True
+R07,SoZo Global,logistics,"SoZo Global manufactures and distributes coffee-based, healthy energy drinks.",USA,R07_HARIS.txt,R07_TEMPLATE.txt,True
+R08,FaceFlow,novel,FaceFlow is a web-based video chat application available on mobile platforms.,CAN,R08_HARIS.txt,R08_TEMPLATE.txt,True
+R09,Godengo,retail,Godengo is a digital advertising platform for magazine publishers that enables them to offer magazin,USA,R09_HARIS.txt,R09_TEMPLATE.txt,False
+R10,Wordlock,tech,"Wordlock manufactures brass, steel and zinc locks that use a letter combination locking system inste",USA,R10_HARIS.txt,R10_TEMPLATE.txt,True

@@ -1,0 +1,10 @@
+REPORT ID: R04-B
+Date: 2026-02-26
+Brief: Smallknot is an online community crowdfunding platform that allows individuals to invest in small businesses in exchange
+Region: USA
+============================================================
+Business area: Smallknot is an online community crowdfunding platform that
+allows individuals to invest in small businesses in exchange for special perks.
+
+No structured data available for this input via the template system.
+Manual research recommended.

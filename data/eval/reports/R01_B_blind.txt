@@ -1,0 +1,10 @@
+REPORT ID: R01-B
+Date: 2026-02-26
+Brief: Hadasit Bio-Holdings provides investment exposure to a select portfolio of biotechnology companies based in Israel.
+Region: ISR
+============================================================
+Business area: Hadasit Bio-Holdings provides investment exposure to a select
+portfolio of biotechnology companies based in Israel.
+
+No structured data available for this input via the template system.
+Manual research recommended.

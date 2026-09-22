@@ -1,0 +1,11 @@
+REPORT ID: R08
+Date: 2026-02-26
+System: TEMPLATE
+Brief: FaceFlow is a web-based video chat application available on mobile platforms.
+Region: CAN
+============================================================
+Business area: FaceFlow is a web-based video chat application available on
+mobile platforms.
+
+No structured data available for this input via the template system.
+Manual research recommended.

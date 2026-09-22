@@ -1,0 +1,11 @@
+REPORT ID: R02
+Date: 2026-02-26
+System: TEMPLATE
+Brief: Tigo Energy provides smart module technology for the solar industry.
+Region: USA
+============================================================
+Business area: Tigo Energy provides smart module technology for the solar
+industry.
+
+No structured data available for this input via the template system.
+Manual research recommended.
