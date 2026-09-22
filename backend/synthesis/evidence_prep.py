@@ -241,8 +241,16 @@ def curate_top_evidence(
         for item in items:
             curated_index[item["id"]] = item
 
+    # Drop agent_outputs from the curated payload. It holds every agent's full
+    # raw output — typically the single largest field — and nothing downstream
+    # reads it, so sending it to the LLM only burns tokens. The uncurated
+    # structure keeps it, so the persisted evidence snapshot is unaffected.
+    curated_payload = {
+        key: value for key, value in structured_evidence.items() if key != "agent_outputs"
+    }
+
     return {
-        **structured_evidence,
+        **curated_payload,
         "evidence_by_category": curated,
         "evidence_index": curated_index,
     }

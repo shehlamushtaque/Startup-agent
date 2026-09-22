@@ -88,6 +88,21 @@ configured wins:
 All four speak the same interface, so switching providers is a `.env` change —
 no code edits required.
 
+**Free-tier token limits.** Synthesis sends a large evidence payload, which can
+exceed a free tier's tokens-per-minute cap (Groq's is 8,000). The app detects
+this and automatically retries with less evidence, so it degrades in detail
+rather than falling back to a template. Set `SYNTHESIS_MAX_EVIDENCE` (default 5)
+to control the starting amount.
+
+**Groq model availability varies by account.** If you see a 404 saying the model
+does not exist, list the models your key can reach:
+
+```bash
+curl https://api.groq.com/openai/v1/models -H "Authorization: Bearer $GROQ_API_KEY"
+```
+
+Then set `GROQ_MODEL` to one of them.
+
 `.env` is gitignored and must never be committed.
 
 ## 3. Frontend setup

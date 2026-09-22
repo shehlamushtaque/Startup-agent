@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 from typing import Any, Dict, Iterable, Optional
 
@@ -27,16 +28,32 @@ class LLMReportGenerator:
     def __init__(
         self,
         llm_client=None,
-        max_evidence_per_category: int = 5,
+        max_evidence_per_category: Optional[int] = None,
     ):
-        # Use provided client, or auto-detect (Ollama first, then DeepSeek)
+        # Use provided client, or auto-detect (Ollama, Groq, generic, DeepSeek)
         if llm_client:
             self.llm_client = llm_client
         elif get_llm_client:
             self.llm_client = get_llm_client()
         else:
             self.llm_client = None
+        if max_evidence_per_category is None:
+            try:
+                max_evidence_per_category = int(os.getenv("SYNTHESIS_MAX_EVIDENCE", "5"))
+            except ValueError:
+                max_evidence_per_category = 5
         self.max_evidence_per_category = max_evidence_per_category
+
+    @staticmethod
+    def _is_too_large(error_msg: str) -> bool:
+        """True if the provider rejected the request for being too big."""
+        lowered = error_msg.lower()
+        return (
+            "413" in error_msg
+            or "request too large" in lowered
+            or "rate_limit_exceeded" in lowered
+            or "context length" in lowered
+        )
 
     def generate(
         self,
@@ -66,10 +83,36 @@ class LLMReportGenerator:
             }
 
         try:
-            # Generate LLM synthesis
-            llm_response = self.llm_client.synthesize_report(idea_context, curated)
+            # Generate LLM synthesis. If the provider rejects the request for
+            # being too large (free tiers often cap tokens-per-minute), retry
+            # with progressively less evidence before giving up on the LLM.
+            caps = [c for c in (3, 2, 1) if c < self.max_evidence_per_category]
+            llm_response = None
+            last_too_large: Optional[Exception] = None
+
+            for attempt, payload in enumerate([curated] + [None] * len(caps)):
+                if payload is None:
+                    cap = caps[attempt - 1]
+                    payload = curate_top_evidence(structured, max_per_category=cap)
+                    print(
+                        f"[INFO] Synthesis request too large; retrying with "
+                        f"max_evidence_per_category={cap}.",
+                        file=sys.stderr,
+                    )
+                try:
+                    llm_response = self.llm_client.synthesize_report(idea_context, payload)
+                    curated = payload
+                    break
+                except Exception as exc:
+                    if not self._is_too_large(str(exc)):
+                        raise
+                    last_too_large = exc
+
+            if llm_response is None:
+                raise last_too_large  # type: ignore[misc]
+
             report_content = llm_response["content"]
-            
+
             # Evidence sources section removed - not needed in report
             
             return {

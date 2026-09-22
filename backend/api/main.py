@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import math
 import sys
 import re
 from pathlib import Path
@@ -57,6 +58,22 @@ research_sessions: TypingDict[str, Dict[str, Any]] = {}
 
 
 # Helper --------------------------------------------------------------
+def _json_safe(value):
+    """Recursively replace NaN/Infinity with None so the payload is valid JSON.
+
+    Evidence is sourced from pandas frames, where missing numbers arrive as
+    float('nan'). json.dumps emits a bare `NaN` token for those, which is not
+    valid JSON, so serialising the response raises ValueError.
+    """
+    if isinstance(value, float):
+        return value if math.isfinite(value) else None
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_safe(item) for item in value]
+    return value
+
+
 def _is_meaningful_text(text: Optional[str]) -> bool:
     if not text:
         return False
@@ -525,12 +542,12 @@ async def ask_question(request: QARequest):
             idea_context=idea_context
         )
 
-        return {
+        return _json_safe({
             "answer": result.get("answer", ""),
             "sources": result.get("sources", []),
             "evidence": result.get("evidence", []),  # Include evidence details
             "llm_used": result.get("llm_used", False),
-        }
+        })
     except HTTPException:
         raise
     except Exception as e:
